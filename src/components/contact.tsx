@@ -2,7 +2,7 @@ import { FadeUp } from "./motion";
 
 export function Contact() {
   return (
-    <section className="relative py-32">
+    <section id="contact" className="relative py-32">
       <div className="mx-auto max-w-3xl px-6 text-center">
         <FadeUp>
           <h2 className="text-2xl font-semibold tracking-tight">

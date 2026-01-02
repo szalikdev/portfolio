@@ -1,6 +1,6 @@
 import { Hero } from "@/components/hero";
 import { Timeline } from "@/components/timeline";
-import { ZalixProject } from "@/components/project";
+import { Projects } from "@/components/projects";
 import { TechStack } from "@/components/tech-stack";
 import { Writeups } from "@/components/writeups";
 import { Contact } from "@/components/contact";
@@ -10,7 +10,7 @@ export default function Home() {
     <main>
       <Hero />
       <Timeline />
-      <ZalixProject />
+      <Projects />
       <TechStack />
       <Writeups />
       <Contact />

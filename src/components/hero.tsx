@@ -28,13 +28,13 @@ export function Hero() {
 
 					<FadeUp delay={0.1}>
 						<div className="mt-10 flex gap-4">
-							<button className="px-5 py-2.5 rounded-md bg-gradient-to-r from-[#7f5af0] to-[#2cb67d] text-black hover:opacity-90 transition-opacity">
+							<a href="#projects" className="inline-flex items-center justify-center px-5 py-2.5 rounded-md bg-gradient-to-r from-[#7f5af0] to-[#2cb67d] text-black hover:opacity-90 transition-opacity">
 								View Projects
-							</button>
+							</a>
 
-							<button className="px-5 py-2.5 rounded-md border border-neutral-700 hover:border-neutral-500 transition-colors">
+							<a href="#contact" className="inline-flex items-center justify-center px-5 py-2.5 rounded-md border border-neutral-700 hover:border-neutral-500 transition-colors">
 								Contact
-							</button>
+							</a>
 						</div>
 					</FadeUp>
 
