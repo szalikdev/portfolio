@@ -47,11 +47,13 @@ jobs:
 
       - name: Create source archive
         run: |
-          zip -r portfolio-source-v0.1.${{ steps.commit_count.outputs.count }}.zip . -x "node_modules/*" ".git/*" ".next/*"
+          zip -r portfolio-source-v0.1.${{ steps.commit_count.outputs.count }}.zip . -x "node_modules/*" ".git/*" ".next/*" "out/*"
 
-      - name: Create build archive
+      - name: Create static site archive
         run: |
-          zip -r portfolio-build-v0.1.${{ steps.commit_count.outputs.count }}.zip .next/ public/ package.json package-lock.json next.config.ts
+          cd out
+          zip -r ../portfolio-static-v0.1.${{ steps.commit_count.outputs.count }}.zip .
+          cd ..
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -67,15 +69,18 @@ jobs:
             
             ## Assets
             - `portfolio-source-v0.1.${{ steps.commit_count.outputs.count }}.zip` - Source code (excludes node_modules)
-            - `portfolio-build-v0.1.${{ steps.commit_count.outputs.count }}.zip` - Production build (ready to deploy)
+            - `portfolio-static-v0.1.${{ steps.commit_count.outputs.count }}.zip` - **Static HTML site (ready to deploy!)**
             
             ### Deploy Instructions
-            1. Download `portfolio-build-v0.1.${{ steps.commit_count.outputs.count }}.zip`
-            2. Extract and run `npm install --production`
-            3. Run `npm start` to serve the production build
+            The static site can be deployed to any web server:
+            1. Download `portfolio-static-v0.1.${{ steps.commit_count.outputs.count }}.zip`
+            2. Extract to your web server directory
+            3. Serve with any static hosting (Netlify, Vercel, GitHub Pages, Nginx, etc.)
+            
+            No Node.js runtime required! ✨
           files: |
             portfolio-source-v0.1.${{ steps.commit_count.outputs.count }}.zip
-            portfolio-build-v0.1.${{ steps.commit_count.outputs.count }}.zip
+            portfolio-static-v0.1.${{ steps.commit_count.outputs.count }}.zip
           draft: false
           prerelease: false
         env:
