@@ -4,8 +4,7 @@ This repository contains the source code for my personal portfolio.
 
 It is intentionally **open source**.
 
-Not because the design is the point —  
-but because the *process* is.
+Not because the design is the point —  but because the *process* is.
 
 ---
 
