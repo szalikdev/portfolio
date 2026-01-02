@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+/* === Design Tokens === */
+:root {
+  --background: #0b0d10;
+  --foreground: #eaeaea;
+
+  --accent-primary: #7f5af0;
+  --accent-secondary: #2cb67d;
+}
+
+/* Tailwind theme bridge */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+}
+
+/* Global constraints */
+html,
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
