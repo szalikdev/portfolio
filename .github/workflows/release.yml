@@ -1,0 +1,82 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production bundle
+        run: npm run build
+
+      - name: Get commit count
+        id: commit_count
+        run: echo "count=$(git rev-list --count HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Get short SHA
+        id: sha
+        run: echo "short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Get commit message
+        id: commit_msg
+        run: |
+          msg=$(git log -1 --pretty=%B)
+          echo "message<<EOF" >> $GITHUB_OUTPUT
+          echo "$msg" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create source archive
+        run: |
+          zip -r portfolio-source-v0.1.${{ steps.commit_count.outputs.count }}.zip . -x "node_modules/*" ".git/*" ".next/*"
+
+      - name: Create build archive
+        run: |
+          zip -r portfolio-build-v0.1.${{ steps.commit_count.outputs.count }}.zip .next/ public/ package.json package-lock.json next.config.ts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v0.1.${{ steps.commit_count.outputs.count }}
+          name: Release v0.1.${{ steps.commit_count.outputs.count }}
+          body: |
+            ## Changes
+            ${{ steps.commit_msg.outputs.message }}
+            
+            **Commit:** ${{ steps.sha.outputs.short }}
+            **Author:** ${{ github.actor }}
+            
+            ## Assets
+            - `portfolio-source-v0.1.${{ steps.commit_count.outputs.count }}.zip` - Source code (excludes node_modules)
+            - `portfolio-build-v0.1.${{ steps.commit_count.outputs.count }}.zip` - Production build (ready to deploy)
+            
+            ### Deploy Instructions
+            1. Download `portfolio-build-v0.1.${{ steps.commit_count.outputs.count }}.zip`
+            2. Extract and run `npm install --production`
+            3. Run `npm start` to serve the production build
+          files: |
+            portfolio-source-v0.1.${{ steps.commit_count.outputs.count }}.zip
+            portfolio-build-v0.1.${{ steps.commit_count.outputs.count }}.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
